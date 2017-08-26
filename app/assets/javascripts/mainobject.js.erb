@@ -1,0 +1,141 @@
+$(document).ready(function(){
+
+	var myCanvas = $('#main-canvas')
+
+	// -----------------------Scene and Camera-----------------------
+	var scene = new THREE.Scene();
+	var camera = new THREE.PerspectiveCamera( 45, myCanvas.innerWidth()/myCanvas.innerHeight(), 0.1, 1000 );
+	camera.position.set(5, 0, 30)
+
+	//------------------------Renderer-------------------------------
+	var renderer = new THREE.WebGLRenderer();
+	renderer.setSize( myCanvas.innerWidth(), myCanvas.innerHeight() );
+	renderer.setClearColor( 0xf0f0f0 );
+	myCanvas.append( renderer.domElement );
+
+	//-------------------------Main Geometries------------------------
+
+	// Define 'add cube' function
+	var addCube = function() {
+		var geometry_c = new THREE.BoxGeometry( 1, 1, 1);
+		var material_c = new THREE.MeshLambertMaterial( { color: 0x30ff30 } );
+		var cube = new THREE.Mesh( geometry_c, material_c );
+		window.cube01 = cube;
+
+		cube.position.x = Math.floor((Math.random() * 10) + 1);
+		cube.position.y = Math.floor((Math.random() * 10) + 1);
+		scene.add( cube );
+	}
+
+	// Define 'add sphere' function
+	var addSphere = function() {
+		var geometry_s = new THREE.SphereGeometry( 1, 10, 10 );
+		var material_s = new THREE.MeshLambertMaterial( { color: 0xFA5882 } );
+		var sphere = new THREE.Mesh( geometry_s, material_s );
+		window.sphere01 = sphere;
+
+		sphere.position.x = Math.floor((Math.random() * 10) + 1);
+		sphere.position.y = Math.floor((Math.random() * 10) + 1);
+		scene.add( sphere );
+	}
+
+	// Define 'add octahedron' function
+	var addOctahedron = function() {
+		var geometry = new THREE.OctahedronGeometry( 1, 1, 1 );
+		var material = new THREE.MeshLambertMaterial( { color: 0xCED8F6 } );
+		var octahedron = new THREE.Mesh( geometry, material );
+		window.octahedron01 = octahedron;
+
+		octahedron.position.x = Math.floor((Math.random() * 10) + 1);
+		octahedron.position.y = Math.floor((Math.random() * 10) + 1);
+		scene.add( octahedron );
+	}
+
+	// Define 'add ring' function
+	var addRing = function() {
+		var geometry = new THREE.TorusGeometry( 1, 0.5, 10, 10);
+		var material = new THREE.MeshLambertMaterial( { color: 0xF7FE2E } );
+		var ring = new THREE.Mesh( geometry, material );
+		window.ring01 = ring;
+
+		ring.position.x = Math.floor((Math.random() * 10) + 1);
+		ring.position.y = Math.floor((Math.random() * 10) + 1);
+		scene.add( ring );
+	}
+	
+	// Define 'add cylinder' function
+	var addCylinder = function() {
+		console.log("cylinder");
+		var geometry = new THREE.CylinderGeometry( 1, 1, 2, 20);
+		var material = new THREE.MeshLambertMaterial( { color: 0x3030ff } );
+		var cylinder = new THREE.Mesh( geometry, material );
+		window.cylinder01 = cylinder;
+
+		cylinder.position.x = Math.floor((Math.random() * 10) + 1);
+		cylinder.position.y = Math.floor((Math.random() * 10) + 1);
+		scene.add( cylinder );
+	}
+	
+	// Define 'add icosahedron' function
+	var addIcosahedron = function() {
+		console.log("toto");
+		var geometry = new THREE.IcosahedronGeometry( 1, 1, 1 );
+		var material = new THREE.MeshLambertMaterial( { color: 0xff3030 } );
+		var icosahedron = new THREE.Mesh( geometry, material );
+		window.icosahedron01 = icosahedron;
+
+		icosahedron.position.x = Math.floor((Math.random() * 10) + 1);
+		icosahedron.position.y = Math.floor((Math.random() * 10) + 1);
+		scene.add( icosahedron );
+	}
+	
+	//-------------------------Button------------------------
+
+	// addCube button
+	$('#add-cube-btn').click(function(){
+		addCube();
+	});
+
+	// addSphere button
+	$('#add-sphere-btn').click(function(){
+		addSphere();
+	});
+	
+	$('#add-octahedron-btn').click(function(){
+		addOctahedron();
+	});
+
+	$('#add-ring-btn').click(function(){
+		addRing();
+	});
+
+	$('#add-cylinder-btn').click(function(){
+		addCylinder();
+	});
+
+	$('#add-icosahedron-btn').click(function(){
+		addIcosahedron();
+	});
+
+	//-------------------------Light----------------------------
+	var light = new THREE.PointLight( 0xFFFFFF );
+	light.position.set( 10, 0, 10 );
+	scene.add( light );
+
+	//-------------------------Loop----------------------------
+	var render = function () {
+		requestAnimationFrame( render );
+
+		scene.traverse(function(e) {
+			if (e instanceof THREE.Mesh) {
+				e.rotation.x += 0.02;
+				e.rotation.y += 0.02;        
+			}
+		});
+
+		renderer.render(scene, camera);
+	};
+
+	render();
+
+});
